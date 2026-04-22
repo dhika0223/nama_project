@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+// ROOT
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
+  }
+}
+
+// =======================
+// HALAMAN 1: LOGIN
+// =======================
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void login() {
+    if (emailController.text == "admin@gmail.com" &&
+        passwordController.text == "12345") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login gagal!")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.blue.shade100, // 🔥 background biru
+      appBar: AppBar(
+        title: const Text("Login"),
+        backgroundColor: Colors.blue,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 100),
+
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: "Email",
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: login,
+                child: const Text("Login"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// =======================
+// HALAMAN 2: PROFILE
+// =======================
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  Widget buildItem(IconData icon, String text) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.blue),
+        title: Text(text),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.blue.shade100, // 🔥 background biru
+      appBar: AppBar(
+        title: const Text("Profil Saya"),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            buildItem(Icons.person, "Andhika Dwi Pebrianta"),
+            buildItem(Icons.badge, "NIM: 240103087"),
+            buildItem(Icons.school, "Kelas: TI24A3"),
+            buildItem(Icons.computer, "Teknik Informatika"),
+
+            const SizedBox(height: 20),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Logout"),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
